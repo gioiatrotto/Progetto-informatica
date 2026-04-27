@@ -11,7 +11,11 @@
 #include "utils.c"
 
 int main(){ 
-    int scelta=0, sceltaClienti=0,sceltaTavoli=0,sceltaBottiglia=0, scelta_statistiche;
+    int scelta=0;
+    int sceltaClienti=0;
+    int sceltaTavoli=0;
+    int sceltaBottiglia=0;
+    int sceltaStorico=0;
 
     do{
         printf("\nBENVENUTI AD ABYSSIA\n");
@@ -29,9 +33,9 @@ int main(){
         case 1:
             do{
                 printf("\n---Clienti---\n");
-                printf("1) Aggiungi clienti\n");
-                printf("2) Stampa lista clienti\n");
-                printf("3) Eliminazione clienti\n");
+                printf("1) Aggiungi clienti a un tavolo\n");
+                printf("2) Stampa lista clienti di un tavolo\n");
+                printf("3) Eliminazione clienti a un tavolo\n");
                 printf("0) Vai alla home\n");
                 scanf("%d", &sceltaClienti);
 
@@ -149,34 +153,23 @@ int main(){
         case 4:
             do{
                 printf("\n----Storico----\n");
-                printf("1) \n");
-                printf("2. Utente con più prestiti\n");
-                printf("3. Visualizza storico prestiti\n");
-                printf("4. Visualizza tasso di restituzione\n");
-                printf("5. Visualizza generi più richiesti\n");
-                printf("0. Esci\n");
-                printf("Scelta: ");
-                scanf("%d", &scelta_statistiche);
+                printf("1) Visualizzza tutto lo storico\n");
+                printf("2) Stampa storico di un determinato giorno\n");
+                printf("3) Stampa storico in ordine alfabetico \n");
+                printf("0) Vai alla home\n");
+                scanf("%d", &sceltaStorico);
 
-                switch(scelta_statistiche){
+                switch(sceltaStorico){
                     case 1:
-                        libroPiuPrestato();
+                        visualizzaStorico();
                         break;
 
                     case 2:
-                        utentePiuPrestiti();
+                        stampaStoricoData();
                         break;
 
                     case 3:
-                        storicoPrestiti();
-                        break;
-
-                    case 4:
-                        tassoRestituzione();
-                        break;
-
-                    case 5:
-                        generiPiuRichiesti();
+                        stampaStoricoAlfa();
                         break;
 
                     case 0:
@@ -184,18 +177,18 @@ int main(){
                         break;
                         
                     default:
-                        printf("\nScelta non valida.\n");
-                    break;
+                        printf("\n!!!ERRORE!!!\n");
+                        break;
                 }
-            }while(scelta_statistiche!=0);
+            }while(sceltaStorico!=0);
             break;
 
         case 0:
-            printf("\nSei uscito dal programma.\n");
+            printf("\n---Uscita dal programma---\n");
             break;
 
         default:
-            printf("\nOpzione non valida.\n");
+            printf("\n!!!ERRORE!!!\n");
             break;
         }
         
