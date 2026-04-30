@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
 typedef enum{
    BASE,
    VIP
@@ -71,18 +76,46 @@ void eliminaTavoli(){
 }
 
 void stampaTavolo() {
-    FILE *fp = fopen("tavoli.csv", "r"); // lettura binaria
+    FILE *fp = fopen("tavoli.csv", "r");  
     if (fp == NULL) {
-        printf("Nessun tavolo presente!\n");
+        printf("\nNessun tavolo presente!\n");
         return;
     }
 
     Tavolo T;
     printf("\n--- Tavoli ---\n");
     while (fread(&T, sizeof(Tavolo), 1, fp) == 1) {
-        printf("Tipo: %d \nnumero massimo persone: %s Sesso: %c\n", c.nome, c.telefono, c.sesso);
+        printf("\nTipo: %d\nNumero massimo persone: %d\nPrezzo: %d\nNumero del tavolo: %d\n", T.tipo, T.max_persone, T.prezzo, T.num_tavolo);
     }
     fclose(fp);
-    printf("---------------\n");
+}
+
+void trovaTavoli(){
+    FILE *fp= fopen("tavoli.csv","r");
+    Tavolo T;
+    int cerca;
+    int flag;
+    if (fp == NULL) {
+        printf("Errore apertura file!\n");
+        return;
+    }
+    printf("Inserisci il numero del tavolo: ");
+    scanf("%d", &cerca);
+    getchar();
+
+    while(fread(&T ,sizeof(Tavolo),1,fp)==1 && !flag){
+        if(T.num_tavolo == cerca){
+            printf("\nTrovato\nTipo: %d\nNumero massimo persone: %d\nPrezzo: %d\nNumero del tavolo: %d\n", T.tipo, T.max_persone, T.prezzo, T.num_tavolo);
+            flag=1;
+
+        }
+    }
+    if(!flag)
+        printf("\nTavolo non trovato!!!!! ");
+
+    fclose(fp);
+}
+void prenotaTavolo(){
+    
 }
 

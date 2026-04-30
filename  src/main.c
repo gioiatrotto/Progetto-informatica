@@ -10,7 +10,10 @@
 #include "tavoli.c"
 #include "utils.c"
 
+int id_cliente = 0;
+
 int main(){ 
+    leggiID();
     int scelta=0;
     int sceltaClienti=0;
     int sceltaTavoli=0;
@@ -33,10 +36,14 @@ int main(){
         case 1:
             do{
                 printf("\n---Clienti---\n");
-                printf("1) Aggiungi clienti a un tavolo\n");
-                printf("2) Stampa lista clienti di un tavolo\n");
-                printf("3) Eliminazione clienti a un tavolo\n");
+                printf("1) Cerca cliente\n");
+                printf("2) Aggiunmgi cliente \n");
+                printf("4) Stampa clienti\n");
+                printf("3) Eliminazione cliente \n");
+                printf("4) Modifica cliente\n");
                 printf("0) Vai alla home\n");
+
+                //cerca cliente
                 scanf("%d", &sceltaClienti);
 
                 switch(sceltaClienti){
@@ -69,7 +76,7 @@ int main(){
                 printf("1) Aggiungi tavolo\n");
                 printf("2) Elimina tavolo\n");
                 printf("3) Modifica tavolo\n");
-                printf("4) Stampa tavolo\n");
+                printf("4) Stampa tavoli\n");
                 printf("5) Trova tavolo\n");
                 printf("6) Prenota Tavolo\n");
                 printf("0) Vai alla home\n");
