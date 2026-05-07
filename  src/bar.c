@@ -7,21 +7,21 @@
 typedef struct{
     char nome[50];
     float gradazione;
-}drink;
+}Bottiglia;
 
-void aggiungiBottiglia(){
-    drink menu[4];
-    
-    strcpy(menu[0].nome, "Anima Latina");
-    menu[0].gradazione = 12.00;
+void aggiungi_bottiglia(){
+    Bottiglia b;
+    printf("nome del drink: ");
+    scanf("%s", b.nome);
+    printf("gradazione: ");
+    scanf("%f", &b.gradazione);
 
-    strcpy(menu[1].nome, "Veleno Dolce");
-    menu[1].gradazione = 10.00;
-
-    strcpy(menu[2].nome, "Oro Tropicale");
-    menu[2].gradazione = 14.00;
-
-    strcpy(menu[3].nome, "Breeze");
-    menu[3].gradazione = 0;
+    FILE *f = fopen("bar.csv", "a");
+    if(f != NULL){
+        fprintf(f, "%s,%.2f\n", b.nome, b.gradazione);
+        fclose(f);
+        printf("Bottiglia aggiunta con successo!\n");
+    } else {
+        printf("Errore nell'apertura del file!\n");
+    }
 }
-

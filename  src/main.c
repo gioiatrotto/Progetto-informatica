@@ -9,6 +9,7 @@
 #include "prenotazioni.c"
 #include "tavoli.c"
 #include "utils.c"
+#include "bottiglie.c"
 
 int id_cliente = 0;
 
@@ -119,31 +120,48 @@ int main(){
         case 3:
             do{
                 printf("\n----Bar----\n");
-                printf("1) Scegli la bottiglia in omaggio\n");
-                printf("2) Elimina la bottiglia dal tavolo\n");
-                printf("3) Modifica la bottiglia dal tavolo\n");
-                printf("4) Aggiungi una bottiglia dal menù\n");
-                printf("5) Elimina una bottiglia dal menù\n");
+                printf("1) Visualizza menu bottiglie\n");
+                printf("2) Aggiungi bottiglia al menù\n");
+                printf("3) Elimina bottiglia dal menù\n");
+                printf("4) Visualizza bottiglie di un tavolo\n");
+                printf("5) Aggiungi bottiglia a un tavolo\n");
+                printf("6) Scegli bottiglia in omaggio per tavolo\n");
+                printf("7) Elimina bottiglia dal tavolo\n");
+                printf("8) Modifica bottiglia del tavolo\n");
                 printf("0) Vai alla home\n");
                 scanf("%d", &sceltaBottiglia);
 
                 switch(sceltaBottiglia){
                     case 1:
-                        scegliBottigliaTavolo();
+                        stampa_menu_bottiglie();
                         break;
 
                     case 2:
-                        eliminaBottigliaTavolo();
+                        aggiungi_bottiglia_menu();
                         break;
 
                     case 3:
-                        modificaBottigliaTavolo();
+                        rimuovi_bottiglia_menu();
                         break;
+                    
                     case 4:
-                        aggiungiBottigliaMenu();
+                        stampa_bottiglie_tavolo();
                         break;
+                    
                     case 5:
-                        eliminaBottigliaMenu();
+                        aggiungi_bottiglia_tavolo();
+                        break;
+                    
+                    case 6:
+                        scegli_bottiglia_omaggio();
+                        break;
+
+                    case 7:
+                        elimina_bottiglia_tavolo();
+                        break;
+
+                    case 8:
+                        modifica_bottiglia_tavolo();
                         break;
 
                     case 0:
