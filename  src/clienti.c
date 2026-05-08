@@ -42,7 +42,7 @@ void salva_ultimo_id(int id) {
     }
 }
 
-// Converte una stringa in una struttura Cliente. Ritorna 1 se ok, 0 se errore.
+// Converte una stringa in una struct Cliente. Ritorna 1 se la conversione è avvenuta con successo, 0 altrimenti.
 int riga_a_cliente(const char *riga, Cliente *c) {
     char copia[256];
     strncpy(copia, riga, sizeof(copia) - 1);
@@ -90,7 +90,7 @@ void aggiungi() {
 }
 
 //stampa tutti i clienti presenti nel file, con ID, nome, cognome ed età
-void elenco() {
+void stampaClienti() {
     FILE *f = fopen(FILE_CLIENTI, "r");
     if (f == NULL) {
         printf("\nArchivio vuoto.\n");
@@ -109,7 +109,7 @@ void elenco() {
 }
 
 // elimina un cliente cercandolo per ID. Se trovato, viene rimosso dal file.
-void elimina() {
+void eliminaClienti() {
     int id_cerca;
     printf("\nID da eliminare: ");
     scanf("%d", &id_cerca);

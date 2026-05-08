@@ -115,7 +115,4 @@ void trovaTavoli(){
 
     fclose(fp);
 }
-void prenotaTavolo(){
-    
-}
 

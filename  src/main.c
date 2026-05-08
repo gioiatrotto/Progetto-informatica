@@ -9,7 +9,7 @@
 #include "prenotazioni.c"
 #include "tavoli.c"
 #include "utils.c"
-#include "bottiglie.c"
+
 
 int id_cliente = 0;
 
@@ -20,6 +20,8 @@ int main(){
     int sceltaTavoli=0;
     int sceltaBottiglia=0;
     int sceltaStorico=0;
+
+    Menu* menu = creaMenu();
 
     do{
         printf("\nBENVENUTI AD ABYSSIA\n");
@@ -39,9 +41,9 @@ int main(){
                 printf("\n---Clienti---\n");
                 printf("1) Cerca cliente\n");
                 printf("2) Aggiunmgi cliente \n");
-                printf("4) Stampa clienti\n");
-                printf("3) Eliminazione cliente \n");
-                printf("4) Modifica cliente\n");
+                printf("3) Stampa clienti\n");
+                printf("4) Eliminazione cliente \n");
+                printf("5) Modifica cliente\n");
                 printf("0) Vai alla home\n");
 
                 //cerca cliente
@@ -59,7 +61,9 @@ int main(){
                     case 3:
                         eliminaClienti();
                         break;
-
+                    case 4:
+                        modifica();
+                        break;
                     case 0:
                         printf("\nVai alla home.\n");
                         break;
@@ -118,49 +122,51 @@ int main(){
             break;
 
         case 3:
+            char _nome[50];
+            float _prezzo;
+            float _gradazione;
             do{
                 printf("\n----Bar----\n");
                 printf("1) Visualizza menu bottiglie\n");
                 printf("2) Aggiungi bottiglia al menù\n");
                 printf("3) Elimina bottiglia dal menù\n");
-                printf("4) Visualizza bottiglie di un tavolo\n");
-                printf("5) Aggiungi bottiglia a un tavolo\n");
-                printf("6) Scegli bottiglia in omaggio per tavolo\n");
-                printf("7) Elimina bottiglia dal tavolo\n");
-                printf("8) Modifica bottiglia del tavolo\n");
+                printf("4) Scegli bottiglia in omaggio per tavolo\n");
+                printf("5) Elimina bottiglia dal tavolo\n");
+                printf("6) Modifica bottiglia del tavolo\n");
                 printf("0) Vai alla home\n");
                 scanf("%d", &sceltaBottiglia);
 
                 switch(sceltaBottiglia){
                     case 1:
-                        stampa_menu_bottiglie();
+                        stampa_menu_bottiglie(menu);
                         break;
 
                     case 2:
-                        aggiungi_bottiglia_menu();
+                        
+                        printf("Inserisci il nome della bottiglia: ");
+                        scanf("%s", _nome);
+                        printf("Inserisci il prezzo: ");
+                        scanf("%f", &_prezzo);
+                        printf("Inserisci la gradazione alcolica: ");
+                        scanf("%f", &_gradazione);
+                        aggiungi_bottiglia_menu(menu, _gradazione, _prezzo, _nome);
                         break;
 
                     case 3:
-                        rimuovi_bottiglia_menu();
+                        printf("Inserisci il nome della bottiglia da eliminare: ");
+                        scanf("%s", _nome);
+                        rimuovi_bottiglia_menu(menu, _nome);
                         break;
                     
                     case 4:
-                        stampa_bottiglie_tavolo();
-                        break;
-                    
-                    case 5:
-                        aggiungi_bottiglia_tavolo();
-                        break;
-                    
-                    case 6:
                         scegli_bottiglia_omaggio();
                         break;
 
-                    case 7:
+                    case 5:
                         elimina_bottiglia_tavolo();
                         break;
 
-                    case 8:
+                    case 6:
                         modifica_bottiglia_tavolo();
                         break;
 

@@ -4,24 +4,69 @@
 #include <stdbool.h>
 
 
-typedef struct{
+typedef struct Bottiglia{
     char nome[50];
     float gradazione;
+    float prezzo;
+    struct Bottiglia* next;
 }Bottiglia;
 
-void aggiungi_bottiglia(){
-    Bottiglia b;
-    printf("nome del drink: ");
-    scanf("%s", b.nome);
-    printf("gradazione: ");
-    scanf("%f", &b.gradazione);
+typedef struct {
+    Bottiglia* testa;
+    int lunghezza;
+} Menu;
 
-    FILE *f = fopen("bar.csv", "a");
-    if(f != NULL){
-        fprintf(f, "%s,%.2f\n", b.nome, b.gradazione);
-        fclose(f);
-        printf("Bottiglia aggiunta con successo!\n");
-    } else {
-        printf("Errore nell'apertura del file!\n");
+Menu* creaMenu() {
+    Menu* menu = (Menu*)malloc(sizeof(Menu));
+    menu->testa = NULL;
+    menu->lunghezza = 0;
+    return menu;
+}
+void stampa_menu_bottiglie(Menu* menu) {
+    Bottiglia* current = menu->testa;
+    
+    printf("Menu delle bottiglie:\n");
+    while (current != NULL) {
+        printf("%s (Gradazione: %.2f, Prezzo: %.2f) -> ", current->nome, current->gradazione, current->prezzo);
+        current = current->next;
+    }
+    printf("NULL\n");
+    printf("Lunghezza: %d\n", menu->lunghezza);
+}
+
+void aggiungi_bottiglia_menu(Menu* menu, float gradazione, float prezzo, char* nome) {
+    Bottiglia* nuovaBottiglia = (Bottiglia*)malloc(sizeof(Bottiglia));
+    nuovaBottiglia->gradazione = gradazione;
+    nuovaBottiglia->prezzo = prezzo;
+    strcpy(nuovaBottiglia->nome, nome);
+    nuovaBottiglia->next = menu->testa;
+    menu->testa = nuovaBottiglia;
+    menu->lunghezza++;
+}
+
+void rimuovi_bottiglia_menu(Menu* menu, char* nome ){
+    if (menu->testa == NULL) return;
+    
+    if (menu->testa->nome == nome) {
+        Bottiglia* temp = menu->testa;
+        menu->testa = menu->testa->next;
+        free(temp);
+        menu->lunghezza--;
+        return;
+    
+    }
+    Bottiglia* current = menu->testa;
+    while (current->next != NULL) {
+        if (current->next->nome == nome) {
+            Bottiglia* temp = current->next;
+            current->next = current->next->next;
+            free(temp);
+            menu->lunghezza--;
+            return;
+        }
+        current = current->next;
     }
 }
+
+
+
