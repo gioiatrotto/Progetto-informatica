@@ -75,7 +75,7 @@ void eliminaTavoli(){
     fclose(fpTmp);
 }
 
-void stampaTavolo() {
+void stampaTavoli() {
     FILE *fp = fopen("tavoli.csv", "r");  
     if (fp == NULL) {
         printf("\nNessun tavolo presente!\n");
@@ -114,5 +114,50 @@ void trovaTavoli(){
         printf("\nTavolo non trovato!!!!! ");
 
     fclose(fp);
+}
+void modificaTavoli(){
+    FILE *fp = fopen("tavoli.csv", "r"); 
+    FILE *fpTmp = fopen("temp.csv", "w");
+    int cerca;
+    Tavolo T;
+
+    if (fp == NULL) {
+        printf("Nessun tavolo presente!\n");
+        return;
+    }
+    if (fpTmp == NULL) {
+        printf("Errore sul file temporaneo!\n");
+        return;
+    }
+    printf("Inserisci il numero del tavolo che vuoi modificare: ");
+    scanf("%d", &cerca);
+    getchar();
+    while(fread(&T, sizeof(Tavolo),1, fp)){
+        if(T.num_tavolo == cerca){
+            printf("\nTrovato\nTipo: %d\nNumero massimo persone: %d\nPrezzo: %d\nNumero del tavolo: %d\n", T.tipo, T.max_persone, T.prezzo, T.num_tavolo);
+            printf("\nInserisci il nuovo numero del tavolo: ");
+            scanf("%d", &T.num_tavolo);
+            printf("\nInserisci il nuovo numero massimo di persone che può ospitare il tavolo: ");
+            scanf("%d", &T.max_persone);
+            getchar();
+            printf("\nInserisci il nuovo prezzo minimo del tavolo: ");
+            scanf("%f", &T.prezzo);
+            getchar();
+            do{
+                printf("\nChe tipo di tavolo è? ");
+                printf("\n0) BASE ");
+                printf("\n1) VIP ");
+                scanf("%d", &T.tipo);
+            }while(T.tipo!=0 || T.tipo!=1);
+        }
+        fwrite(&T, sizeof(Tavolo), 1, fpTmp);
+    }
+    fclose(fp);
+    fclose(fpTmp);
+    fp = fopen("temp.csv", "r"); 
+    fpTmp = fopen("tavoli.csv", "w");
+    while(fread(&T, sizeof(Tavolo), 1, fp))
+        fwrite(&T, sizeof(Tavolo), 1, fpTmp);
+
 }
 

@@ -68,5 +68,18 @@ void rimuovi_bottiglia_menu(Menu* menu, char* nome ){
     }
 }
 
+Bottiglia get_bottiglia(Menu* menu, char* nome) {
+    Bottiglia* current = menu->testa;
+    
+    while (current != NULL) {
+        if (strcmp(current->nome, nome) == 0) {
+            return *current;
+        }
+        current = current->next;
+    }
+    printf("Bottiglia non trovata\n");
+    return (Bottiglia){ .nome = "", .gradazione = 0, .prezzo = 0 };
+}
+
 
 

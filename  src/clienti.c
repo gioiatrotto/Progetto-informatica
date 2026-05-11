@@ -66,19 +66,46 @@ int riga_a_cliente(const char *riga, Cliente *c) {
 
     return 1;
 }
+void cercaCliente() {
+    int id_cerca;
+    printf("\nID da cercare: ");
+    scanf("%d", &id_cerca);
+    getchar();
 
+    FILE *f = fopen(FILE_CLIENTI, "r");
+    if (f == NULL) {
+        printf("\nArchivio vuoto.\n");
+        return;
+    }
+
+    char riga[256];
+    int trovato = 0;
+    while (fgets(riga, sizeof(riga), f)) {
+        Cliente c;
+        if (riga_a_cliente(riga, &c) == 1 && c.id == id_cerca) {
+            printf("Cliente trovato: [%d] %s %s, %d anni\n", c.id, c.nome, c.cognome, c.eta);
+            trovato = 1;
+            break;
+        }
+    }
+    fclose(f);
+    if (!trovato) printf("ID non trovato.\n");
+}
 // aggiunge un nuovo cliente al file, con ID automatico incrementale
-void aggiungi() {
+void aggiungiClienti() {
     Cliente c;
     c.id = prendi_ultimo_id() + 1;
 
     printf("\n--- NUOVO CLIENTE ---\n");
     printf("Nome: ");    
     scanf("%s", c.nome);
+    getchar();
     printf("Cognome: "); 
     scanf("%s", c.cognome);
+    getchar();
     printf("Età: ");     
     scanf("%d", &c.eta);
+    getchar();
 
     FILE *f = fopen(FILE_CLIENTI, "a");
     if (f != NULL) {
@@ -113,6 +140,7 @@ void eliminaClienti() {
     int id_cerca;
     printf("\nID da eliminare: ");
     scanf("%d", &id_cerca);
+    getchar();
 
     FILE *f = fopen(FILE_CLIENTI, "r");
     FILE *t = fopen(FILE_TEMP, "w");
@@ -138,7 +166,7 @@ void eliminaClienti() {
 }
 
 // modifica un cliente cercandolo per ID. Se trovato, viene chiesto di inserire i nuovi dati e il file viene aggiornato.
-void modifica() {
+void modificaCliente() {
     int id_cerca;
     printf("\nID da modificare: ");
     scanf("%d", &id_cerca);
@@ -155,10 +183,13 @@ void modifica() {
             trovato = 1;
             printf("Nuovo Nome: ");    
             scanf("%s", c.nome);
+            getchar();
             printf("Nuovo Cognome: "); 
             scanf("%s", c.cognome);
+            getchar();
             printf("Nuova Età: ");     
             scanf("%d", &c.eta);
+            getchar();
             fprintf(t, "%d,%s,%s,%d\n", c.id, c.nome, c.cognome, c.eta);
         } else {
             fputs(riga, t);

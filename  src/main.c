@@ -32,6 +32,7 @@ int main(){
         printf("4) Visualizza storico\n");
         printf("0) Esci\n");
         scanf("%d", &scelta);
+        getchar();
 
 
         switch(scelta){
@@ -40,7 +41,7 @@ int main(){
             do{
                 printf("\n---Clienti---\n");
                 printf("1) Cerca cliente\n");
-                printf("2) Aggiunmgi cliente \n");
+                printf("2) Aggiungi cliente \n");
                 printf("3) Stampa clienti\n");
                 printf("4) Eliminazione cliente \n");
                 printf("5) Modifica cliente\n");
@@ -48,21 +49,25 @@ int main(){
 
                 //cerca cliente
                 scanf("%d", &sceltaClienti);
+                getchar();
 
                 switch(sceltaClienti){
                     case 1:
+                        cercaCliente();
+                        break;  
+                    case 2:
                         aggiungiClienti();
                         break;
 
-                    case 2:
+                    case 3:
                         stampaClienti();
                         break;
 
-                    case 3:
+                    case 4:
                         eliminaClienti();
                         break;
-                    case 4:
-                        modifica();
+                    case 5:
+                        modificaCliente();
                         break;
                     case 0:
                         printf("\nVai alla home.\n");
@@ -84,8 +89,10 @@ int main(){
                 printf("4) Stampa tavoli\n");
                 printf("5) Trova tavolo\n");
                 printf("6) Prenota Tavolo\n");
+                printf("7) modifica prenotazione\n");
                 printf("0) Vai alla home\n");
                 scanf("%d", &sceltaTavoli);
+                getchar();
 
                 switch(sceltaTavoli){
                     case 1:
@@ -108,7 +115,10 @@ int main(){
                         trovaTavoli();
                         break;
                     case 6:
-                        prenotaTavolo();
+                        prenotaTavolo(menu);
+                        break;
+                    case 7:
+                        modificaPrenotazione();
                         break;
                     case 0:
                         printf("\nSei tornato al menù principale.\n");
@@ -132,9 +142,9 @@ int main(){
                 printf("3) Elimina bottiglia dal menù\n");
                 printf("4) Scegli bottiglia in omaggio per tavolo\n");
                 printf("5) Elimina bottiglia dal tavolo\n");
-                printf("6) Modifica bottiglia del tavolo\n");
                 printf("0) Vai alla home\n");
                 scanf("%d", &sceltaBottiglia);
+                getchar();
 
                 switch(sceltaBottiglia){
                     case 1:
@@ -145,16 +155,20 @@ int main(){
                         
                         printf("Inserisci il nome della bottiglia: ");
                         scanf("%s", _nome);
+                        getchar();
                         printf("Inserisci il prezzo: ");
                         scanf("%f", &_prezzo);
+                        getchar();
                         printf("Inserisci la gradazione alcolica: ");
                         scanf("%f", &_gradazione);
+                        getchar();
                         aggiungi_bottiglia_menu(menu, _gradazione, _prezzo, _nome);
                         break;
 
                     case 3:
                         printf("Inserisci il nome della bottiglia da eliminare: ");
                         scanf("%s", _nome);
+                        getchar();
                         rimuovi_bottiglia_menu(menu, _nome);
                         break;
                     
@@ -164,10 +178,6 @@ int main(){
 
                     case 5:
                         elimina_bottiglia_tavolo();
-                        break;
-
-                    case 6:
-                        modifica_bottiglia_tavolo();
                         break;
 
                     case 0:
