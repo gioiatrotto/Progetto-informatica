@@ -3,15 +3,14 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "bar.c"
-#include "clienti.c"
-#include "file_io.c"
-#include "prenotazioni.c"
-#include "tavoli.c"
-#include "utils.c"
+#include <bar.h>
+#include <clienti.h>
+#include <prenotazioni.h>
+#include <storico.h>
+#include <tavoli.h>
+#include <utils.h>
 
-
-int id_cliente = 0;
+extern int id_cliente;
 
 int main(){ 
     leggiID();
@@ -118,7 +117,8 @@ int main(){
                         prenotaTavolo(menu);
                         break;
                     case 7:
-                        modificaPrenotazione();
+                        // modificaPrenotazione();  // TODO: Funzione non ancora implementata
+                        printf("Funzione non ancora implementata.\n");
                         break;
                     case 0:
                         printf("\nSei tornato al menù principale.\n");
@@ -137,11 +137,9 @@ int main(){
             float _gradazione;
             do{
                 printf("\n----Bar----\n");
-                printf("1) Visualizza menu bottiglie\n");
+                printf("1) Mostra menu bottiglie\n");
                 printf("2) Aggiungi bottiglia al menù\n");
                 printf("3) Elimina bottiglia dal menù\n");
-                printf("4) Scegli bottiglia in omaggio per tavolo\n");
-                printf("5) Elimina bottiglia dal tavolo\n");
                 printf("0) Vai alla home\n");
                 scanf("%d", &sceltaBottiglia);
                 getchar();
@@ -172,14 +170,6 @@ int main(){
                         rimuovi_bottiglia_menu(menu, _nome);
                         break;
                     
-                    case 4:
-                        scegli_bottiglia_omaggio();
-                        break;
-
-                    case 5:
-                        elimina_bottiglia_tavolo();
-                        break;
-
                     case 0:
                         printf("\nVai alla home.\n");
                         break;
@@ -195,8 +185,7 @@ int main(){
             do{
                 printf("\n----Storico----\n");
                 printf("1) Visualizzza tutto lo storico\n");
-                printf("2) Stampa storico di un determinato giorno\n");
-                printf("3) Stampa storico in ordine alfabetico \n");
+                printf("2) Stampa storico di una determinaa data\n");
                 printf("0) Vai alla home\n");
                 scanf("%d", &sceltaStorico);
 
@@ -207,10 +196,6 @@ int main(){
 
                     case 2:
                         stampaStoricoData();
-                        break;
-
-                    case 3:
-                        stampaStoricoAlfa();
                         break;
 
                     case 0:

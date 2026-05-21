@@ -2,16 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <clienti.h>
+
 #define FILE_CLIENTI "data/clienti.csv"
 #define FILE_TEMP "data/clienti_temp.csv"
 #define FILE_ID "data/id.csv"
-
-typedef struct {
-    char nome[40];
-    char cognome[40];
-    int eta;
-    int id;
-} Cliente;
 
 // Rimuove i caratteri di invio a fine riga
 void pulisci_stringa(char *s) {
@@ -50,7 +45,7 @@ int riga_a_cliente(const char *riga, Cliente *c) {
 
     char *pezzo = strtok(copia, ",");
     if (pezzo == NULL) return 0;
-    c->id = atoi(pezzo);
+    c->ID = atoi(pezzo);
 
     pezzo = strtok(NULL, ",");
     if (pezzo == NULL) return 0;
@@ -67,9 +62,12 @@ int riga_a_cliente(const char *riga, Cliente *c) {
     return 1;
 }
 void cercaCliente() {
-    int id_cerca;
+    int ID_cerca;
+    char riga[256];
+    int trovato = 0;
+    
     printf("\nID da cercare: ");
-    scanf("%d", &id_cerca);
+    scanf("%d", &ID_cerca);
     getchar();
 
     FILE *f = fopen(FILE_CLIENTI, "r");
@@ -78,12 +76,10 @@ void cercaCliente() {
         return;
     }
 
-    char riga[256];
-    int trovato = 0;
     while (fgets(riga, sizeof(riga), f)) {
         Cliente c;
-        if (riga_a_cliente(riga, &c) == 1 && c.id == id_cerca) {
-            printf("Cliente trovato: [%d] %s %s, %d anni\n", c.id, c.nome, c.cognome, c.eta);
+        if (riga_a_cliente(riga, &c) == 1 && c.ID == ID_cerca) {
+            printf("Cliente trovato: [%d] %s %s, %d anni\n", c.ID, c.nome, c.cognome, c.eta);
             trovato = 1;
             break;
         }
@@ -94,7 +90,7 @@ void cercaCliente() {
 // aggiunge un nuovo cliente al file, con ID automatico incrementale
 void aggiungiClienti() {
     Cliente c;
-    c.id = prendi_ultimo_id() + 1;
+    c.ID = prendi_ultimo_id() + 1;
 
     printf("\n--- NUOVO CLIENTE ---\n");
     printf("Nome: ");    
@@ -109,10 +105,10 @@ void aggiungiClienti() {
 
     FILE *f = fopen(FILE_CLIENTI, "a");
     if (f != NULL) {
-        fprintf(f, "%d,%s,%s,%d\n", c.id, c.nome, c.cognome, c.eta);
+        fprintf(f, "%d,%s,%s,%d\n", c.ID, c.nome, c.cognome, c.eta);
         fclose(f);
-        salva_ultimo_id(c.id);
-        printf("Salvato con ID: %d\n", c.id);
+        salva_ultimo_id(c.ID);
+        printf("Salvato con ID: %d\n", c.ID);
     }
 }
 
@@ -129,7 +125,7 @@ void stampaClienti() {
     while (fgets(riga, sizeof(riga), f)) {
         Cliente c;
         if (riga_a_cliente(riga, &c) == 1) {
-            printf("[%d] %s %s, %d anni\n", c.id, c.nome, c.cognome, c.eta);
+            printf("[%d] %s %s, %d anni\n", c.ID, c.nome, c.cognome, c.eta);
         }
     }
     fclose(f);
@@ -137,20 +133,21 @@ void stampaClienti() {
 
 // elimina un cliente cercandolo per ID. Se trovato, viene rimosso dal file.
 void eliminaClienti() {
-    int id_cerca;
+    int ID_cerca;
+    char riga[256];
+    int trovato = 0;
+
     printf("\nID da eliminare: ");
-    scanf("%d", &id_cerca);
+    scanf("%d", &ID_cerca);
     getchar();
 
     FILE *f = fopen(FILE_CLIENTI, "r");
     FILE *t = fopen(FILE_TEMP, "w");
     if (f == NULL || t == NULL) return;
 
-    char riga[256];
-    int trovato = 0;
     while (fgets(riga, sizeof(riga), f)) {
         Cliente c;
-        if (riga_a_cliente(riga, &c) == 1 && c.id == id_cerca) {
+        if (riga_a_cliente(riga, &c) == 1 && c.ID == ID_cerca) {
             trovato = 1;
             printf("Cliente eliminato con successo.\n");
             continue;
@@ -162,14 +159,15 @@ void eliminaClienti() {
 
     remove(FILE_CLIENTI);
     rename(FILE_TEMP, FILE_CLIENTI);
-    if (trovato == 0) printf("ID non trovato.\n");
+    if (trovato == 0)
+    printf("ID non trovato.\n");
 }
 
 // modifica un cliente cercandolo per ID. Se trovato, viene chiesto di inserire i nuovi dati e il file viene aggiornato.
 void modificaCliente() {
-    int id_cerca;
+    int ID_cerca;
     printf("\nID da modificare: ");
-    scanf("%d", &id_cerca);
+    scanf("%d", &ID_cerca);
 
     FILE *f = fopen(FILE_CLIENTI, "r");
     FILE *t = fopen(FILE_TEMP, "w");
@@ -179,7 +177,7 @@ void modificaCliente() {
     int trovato = 0;
     while (fgets(riga, sizeof(riga), f)) {
         Cliente c;
-        if (riga_a_cliente(riga, &c) == 1 && c.id == id_cerca) {
+        if (riga_a_cliente(riga, &c) == 1 && c.ID == ID_cerca) {
             trovato = 1;
             printf("Nuovo Nome: ");    
             scanf("%s", c.nome);
@@ -190,7 +188,7 @@ void modificaCliente() {
             printf("Nuova Età: ");     
             scanf("%d", &c.eta);
             getchar();
-            fprintf(t, "%d,%s,%s,%d\n", c.id, c.nome, c.cognome, c.eta);
+            fprintf(t, "%d,%s,%s,%d\n", c.ID, c.nome, c.cognome, c.eta);
         } else {
             fputs(riga, t);
         }

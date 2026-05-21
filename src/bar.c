@@ -3,18 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-
-typedef struct Bottiglia{
-    char nome[50];
-    float gradazione;
-    float prezzo;
-    struct Bottiglia* next;
-}Bottiglia;
-
-typedef struct {
-    Bottiglia* testa;
-    int lunghezza;
-} Menu;
+#include <bar.h>
 
 Menu* creaMenu() {
     Menu* menu = (Menu*)malloc(sizeof(Menu));
@@ -68,17 +57,17 @@ void rimuovi_bottiglia_menu(Menu* menu, char* nome ){
     }
 }
 
-Bottiglia get_bottiglia(Menu* menu, char* nome) {
+Bottiglia* get_bottiglia(Menu* menu, char* nome) {
     Bottiglia* current = menu->testa;
     
     while (current != NULL) {
         if (strcmp(current->nome, nome) == 0) {
-            return *current;
+            return current;
         }
         current = current->next;
     }
     printf("Bottiglia non trovata\n");
-    return (Bottiglia){ .nome = "", .gradazione = 0, .prezzo = 0 };
+    return NULL;
 }
 
 

@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include <tavoli.h>
+
 typedef enum{
    BASE,
    VIP
@@ -15,7 +17,7 @@ typedef struct{
     int num_tavolo;        
 }Tavolo;
 
-aggiungiTavoli(){
+void aggiungiTavoli(){
     FILE *fp = fopen("tavoli.csv", "a");  
     if (fp == NULL) {
         printf("Errore apertura file!\n");
@@ -31,12 +33,21 @@ aggiungiTavoli(){
     printf("\nInserisci il prezzo minimo del tavolo: ");
     scanf("%f", &T.prezzo);
     getchar();
+
     do{
         printf("\nChe tipo di tavolo è? ");
         printf("\n0) BASE ");
         printf("\n1) VIP ");
         scanf("%d", &T.tipo);
-    }while(T.tipo!=0 || T.tipo!=1);
+        getchar();
+        if(T.tipo!=0 && T.tipo!=1) {
+            printf("\nScelta non valida! Inserisci 0 o 1\n");
+        }
+    }while(T.tipo!=0 && T.tipo!=1);
+    
+    fprintf(fp, "%d,%d,%.2f,%d\n", T.tipo, T.max_persone, T.prezzo, T.num_tavolo);
+    printf("\n✓ Tavolo aggiunto con successo!\n");
+    fclose(fp);
 }
 
 void eliminaTavoli(){
@@ -59,17 +70,17 @@ void eliminaTavoli(){
     getchar();
 
     while(fread(&T, sizeof(Tavolo),1, fp)){
-        if(strcmp(T.num_tavolo,cerca)==0)
+        if(T.num_tavolo==cerca)
             printf("\nil tavolo numero %d verrà eliminato!!", T.num_tavolo);
         else 
-            fwrite(&T, sizeof(Tavolo), 1, fpTmp);
+            fprintf(fpTmp, "%d,%d,%.2f,%d\n", T.tipo, T.max_persone, T.prezzo, T.num_tavolo);
     }
     fclose(fp);
     fclose(fpTmp);
-    fp = fopen("temp.csv", "r"); 
-    fpTmp = fopen("tavoli.csv", "w");
-    while(fread(&T, sizeof(Tavolo), 1, fp))
-        fwrite(&T, sizeof(Tavolo), 1, fpTmp);
+    fpTmp= fopen("temp.csv", "r"); 
+    fp = fopen("tavoli.csv", "w");
+    while(fread(&T, sizeof(Tavolo), 1, fpTmp))
+        fwrite(&T, sizeof(Tavolo), 1, fp);
 
     fclose(fp);
     fclose(fpTmp);
@@ -85,7 +96,9 @@ void stampaTavoli() {
     Tavolo T;
     printf("\n--- Tavoli ---\n");
     while (fread(&T, sizeof(Tavolo), 1, fp) == 1) {
-        printf("\nTipo: %d\nNumero massimo persone: %d\nPrezzo: %d\nNumero del tavolo: %d\n", T.tipo, T.max_persone, T.prezzo, T.num_tavolo);
+        char tipo_str[10];
+        strcpy(tipo_str, T.tipo == BASE ? "BASE" : "VIP");
+        printf("\nTipo: %s\nNumero massimo persone: %d\nPrezzo: %.2f\nNumero del tavolo: %d\n", tipo_str, T.max_persone, T.prezzo, T.num_tavolo);
     }
     fclose(fp);
 }
@@ -105,7 +118,9 @@ void trovaTavoli(){
 
     while(fread(&T ,sizeof(Tavolo),1,fp)==1 && !flag){
         if(T.num_tavolo == cerca){
-            printf("\nTrovato\nTipo: %d\nNumero massimo persone: %d\nPrezzo: %d\nNumero del tavolo: %d\n", T.tipo, T.max_persone, T.prezzo, T.num_tavolo);
+            char tipo_str[10];
+            strcpy(tipo_str, T.tipo == BASE ? "BASE" : "VIP");
+            printf("\nTrovato\nTipo: %s\nNumero massimo persone: %d\nPrezzo: %.2f\nNumero del tavolo: %d\n", tipo_str, T.max_persone, T.prezzo, T.num_tavolo);
             flag=1;
 
         }
@@ -134,7 +149,9 @@ void modificaTavoli(){
     getchar();
     while(fread(&T, sizeof(Tavolo),1, fp)){
         if(T.num_tavolo == cerca){
-            printf("\nTrovato\nTipo: %d\nNumero massimo persone: %d\nPrezzo: %d\nNumero del tavolo: %d\n", T.tipo, T.max_persone, T.prezzo, T.num_tavolo);
+            char tipo_str[10];
+            strcpy(tipo_str, T.tipo == BASE ? "BASE" : "VIP");
+            printf("\nTrovato\nTipo: %s\nNumero massimo persone: %d\nPrezzo: %.2f\nNumero del tavolo: %d\n", tipo_str, T.max_persone, T.prezzo, T.num_tavolo);
             printf("\nInserisci il nuovo numero del tavolo: ");
             scanf("%d", &T.num_tavolo);
             printf("\nInserisci il nuovo numero massimo di persone che può ospitare il tavolo: ");
@@ -148,7 +165,11 @@ void modificaTavoli(){
                 printf("\n0) BASE ");
                 printf("\n1) VIP ");
                 scanf("%d", &T.tipo);
-            }while(T.tipo!=0 || T.tipo!=1);
+                getchar();
+                if(T.tipo!=0 && T.tipo!=1) {
+                    printf("\nScelta non valida! Inserisci 0 o 1\n");
+                }
+            }while(T.tipo!=0 && T.tipo!=1);
         }
         fwrite(&T, sizeof(Tavolo), 1, fpTmp);
     }
@@ -159,5 +180,8 @@ void modificaTavoli(){
     while(fread(&T, sizeof(Tavolo), 1, fp))
         fwrite(&T, sizeof(Tavolo), 1, fpTmp);
 
+    fclose(fp);
+    fclose(fpTmp);
+    printf("\n✓ Tavolo modificato con successo!\n");
 }
 
