@@ -67,4 +67,7 @@ e restituisce un puntatore alla bottiglia corrispondente se presente
 */
 Bottiglia* get_bottiglia(Menu* menu, char* nome);
 
+/* Carica il menu delle bottiglie dal file bar.csv nella lista in memoria. */
+void carica_menu_bottiglie(Menu* menu);
+
 #endif

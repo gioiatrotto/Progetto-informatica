@@ -75,9 +75,17 @@ void prenotaTavolo(Menu* menu){
 
     printf("\nIn che meta vuoi andare? ");
     stampa_mete();
+
     printf("Scegli la meta(1-3): ");
     scanf("%d", &scelta);
     getchar();
+    
+    if (scelta >= 1 && scelta <= 3) {
+        P.meta_scelta = eventi[scelta - 1];
+    } else {
+        printf("Scelta non valida, viene selezionata la prima meta.\n");
+        P.meta_scelta = eventi[0];
+    }
 
     printf("\nInserisci l'id del cliente che ha prenotato: ");
     scanf("%d", &P.id);
@@ -90,8 +98,8 @@ void prenotaTavolo(Menu* menu){
     getchar();
     P.bottiglia_omaggio = get_bottiglia(menu, nome_bottiglia);
 
-    fprintf(fp, "%d,%d,%d,%d,%d,%d,%d\n", P.num_tavolo, P.num_presenti, P.meta_scelta.data_evento.giorno, P.meta_scelta.data_evento.mese, P.meta_scelta.data_evento.anno, P.id);
-    fprintf(f, "%d,%d,%d,%d,%d,%d,%d\n", P.num_tavolo, P.num_presenti, P.meta_scelta.data_evento.giorno, P.meta_scelta.data_evento.mese, P.meta_scelta.data_evento.anno, P.id);
+    fprintf(fp, "%d,%d,%d,%d,%d,%d\n", P.num_tavolo, P.num_presenti, P.meta_scelta.data_evento.giorno, P.meta_scelta.data_evento.mese, P.meta_scelta.data_evento.anno, P.id);
+    fprintf(f, "%d,%d,%d,%d,%d,%d\n", P.num_tavolo, P.num_presenti, P.meta_scelta.data_evento.giorno, P.meta_scelta.data_evento.mese, P.meta_scelta.data_evento.anno, P.id);
     fclose(fp);
     fclose(f);
 

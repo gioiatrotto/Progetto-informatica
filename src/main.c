@@ -21,6 +21,7 @@ int main(){
     int sceltaStorico=0;
 
     Menu* menu = creaMenu();
+    carica_menu_bottiglie(menu);
 
     do{
         printf("\nBENVENUTI AD ABYSSIA\n");

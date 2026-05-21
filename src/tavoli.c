@@ -5,7 +5,7 @@
 
 #include <tavoli.h>
 #define FILE_CLIENTI "data/clienti.csv"
-#define FILE_TEMP "data/clienti_temp.csv"
+#define FILE_TEMP "data/tavoli_temp.csv"
 #define FILE_ID "data/id.csv"
 #define FILE_TAVOLI "data/tavoli.csv"
 #define FILE_BAR "data/bar.csv"
@@ -31,6 +31,7 @@ void aggiungiTavoli(){
         return;
     }
     Tavolo T;
+    int tipo_int;
     
     printf("\nInserisci il numero del tavolo: ");
     scanf("%d", &T.num_tavolo);
@@ -45,8 +46,9 @@ void aggiungiTavoli(){
         printf("\nChe tipo di tavolo è? ");
         printf("\n0) BASE ");
         printf("\n1) VIP ");
-        scanf("%d", &T.tipo);
+        scanf("%d", &tipo_int);
         getchar();
+        T.tipo = tipo_int;
         if(T.tipo!=0 && T.tipo!=1) {
             printf("\nScelta non valida! Inserisci 0 o 1\n");
         }
@@ -62,6 +64,7 @@ void eliminaTavoli(){
     FILE *fpTmp = fopen(FILE_TEMP, "w");
     int cerca;
     Tavolo T;
+    int tipo_int;
 
     if (fp == NULL) {
         printf("Nessun tavolo presente!\n");
@@ -69,6 +72,7 @@ void eliminaTavoli(){
     }
     if (fpTmp == NULL) {
         printf("Errore sul file temporaneo!\n");
+        fclose(fp);
         return;
     }
 
@@ -76,21 +80,20 @@ void eliminaTavoli(){
     scanf("%d", &cerca);
     getchar();
 
-    while(fread(&T, sizeof(Tavolo),1, fp)){
-        if(T.num_tavolo==cerca)
+    while (fscanf(fp, "%d,%d,%f,%d", &tipo_int, &T.max_persone, &T.prezzo, &T.num_tavolo) == 4) {
+        T.tipo = tipo_int;
+        if (T.num_tavolo == cerca)
             printf("\nil tavolo numero %d verrà eliminato!!", T.num_tavolo);
-        else 
+        else
             fprintf(fpTmp, "%d,%d,%.2f,%d\n", T.tipo, T.max_persone, T.prezzo, T.num_tavolo);
     }
-    fclose(fp);
-    fclose(fpTmp);
-    fpTmp= fopen(FILE_TEMP, "r"); 
-    fp = fopen(FILE_TAVOLI, "w");
-    while(fread(&T, sizeof(Tavolo), 1, fpTmp))
-        fwrite(&T, sizeof(Tavolo), 1, fp);
 
     fclose(fp);
     fclose(fpTmp);
+
+    if (rename(FILE_TEMP, FILE_TAVOLI) != 0) {
+        printf("\nErrore durante l'aggiornamento del file tavoli!\n");
+    }
 }
 
 void stampaTavoli() {
@@ -101,8 +104,10 @@ void stampaTavoli() {
     }
     char tipo_str[10];
     Tavolo T;
+    int tipo_int;
     printf("\n--- Tavoli ---\n");
-    while (fread(&T, sizeof(Tavolo), 1, fp) == 1) {
+    while (fscanf(fp, "%d,%d,%f,%d", &tipo_int, &T.max_persone, &T.prezzo, &T.num_tavolo) == 4) {
+        T.tipo = tipo_int;
 
           if (T.tipo == BASE)
             strcpy(tipo_str, "BASE");
@@ -118,7 +123,8 @@ void trovaTavoli(){
     FILE *fp= fopen(FILE_TAVOLI,"r");
     Tavolo T;
     int cerca;
-    int flag;
+    int flag = 0;
+    int tipo_int;
     char tipo_str[10];
     
     if (fp == NULL) {
@@ -129,19 +135,19 @@ void trovaTavoli(){
     scanf("%d", &cerca);
     getchar();
 
-    while(fread(&T ,sizeof(Tavolo),1,fp)==1 && !flag){
-        if(T.num_tavolo == cerca){
+    while (fscanf(fp, "%d,%d,%f,%d", &tipo_int, &T.max_persone, &T.prezzo, &T.num_tavolo) == 4 && !flag) {
+        T.tipo = tipo_int;
+        if (T.num_tavolo == cerca) {
             if (T.tipo == BASE)
                 strcpy(tipo_str, "BASE");
             else
                 strcpy(tipo_str, "VIP");
 
             printf("\nTrovato\nTipo: %s\nNumero massimo persone: %d\nPrezzo: %.2f\nNumero del tavolo: %d\n", tipo_str, T.max_persone, T.prezzo, T.num_tavolo);
-            flag=1;
-
+            flag = 1;
         }
     }
-    if(!flag)
+    if (!flag)
         printf("\nTavolo non trovato!!!!! ");
 
     fclose(fp);
@@ -152,6 +158,7 @@ void modificaTavoli(){
     int cerca;
     Tavolo T;
     char tipo_str[10];
+    int tipo_int;
 
     if (fp == NULL) {
         printf("Nessun tavolo presente!\n");
@@ -159,14 +166,15 @@ void modificaTavoli(){
     }
     if (fpTmp == NULL) {
         printf("Errore sul file temporaneo!\n");
+        fclose(fp);
         return;
     }
     printf("Inserisci il numero del tavolo che vuoi modificare: ");
     scanf("%d", &cerca);
     getchar();
-    while(fread(&T, sizeof(Tavolo),1, fp)){
-        if(T.num_tavolo == cerca){
-            
+    while (fscanf(fp, "%d,%d,%f,%d", &tipo_int, &T.max_persone, &T.prezzo, &T.num_tavolo) == 4) {
+        T.tipo = tipo_int;
+        if (T.num_tavolo == cerca) {
             if (T.tipo == BASE)
                 strcpy(tipo_str, "BASE");
             else
@@ -186,24 +194,23 @@ void modificaTavoli(){
                 printf("\nChe tipo di tavolo è? ");
                 printf("\n0) BASE ");
                 printf("\n1) VIP ");
-                scanf("%d", &T.tipo);
+                scanf("%d", &tipo_int);
                 getchar();
+                T.tipo = tipo_int;
                 if(T.tipo!=0 && T.tipo!=1) {
                     printf("\nScelta non valida! Inserisci 0 o 1\n");
                 }
             }while(T.tipo!=0 && T.tipo!=1);
         }
-        fwrite(&T, sizeof(Tavolo), 1, fpTmp);
+        fprintf(fpTmp, "%d,%d,%.2f,%d\n", T.tipo, T.max_persone, T.prezzo, T.num_tavolo);
     }
     fclose(fp);
     fclose(fpTmp);
-    fpTmp = fopen(FILE_TEMP, "r"); 
-    fp= fopen(FILE_TAVOLI, "w");
-    while(fread(&T, sizeof(Tavolo), 1, fpTmp))
-        fwrite(&T, sizeof(Tavolo), 1, fp);
 
-    fclose(fp);
-    fclose(fpTmp);
+    if (rename(FILE_TEMP, FILE_TAVOLI) != 0) {
+        printf("\nErrore durante l'aggiornamento del file tavoli!\n");
+        return;
+    }
     printf("\n✓ Tavolo modificato con successo!\n");
 }
 

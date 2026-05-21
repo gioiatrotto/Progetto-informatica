@@ -22,6 +22,7 @@ Menu* creaMenu() {
 }
 
 void stampa_menu_bottiglie(Menu* menu) {
+    (void)menu;
     FILE *f = fopen(FILE_BAR, "r");
     if (f == NULL) {
         printf("Errore apertura file bar.csv!\n");
@@ -95,7 +96,7 @@ void rimuovi_bottiglia_menu(Menu* menu, char* nome ){
         return;
     }
 
-    char riga[256];                                        //salvo riga corrente
+    char riga[256];                                         //salvo riga corrente
     while (fgets(riga, sizeof(riga), f)) {                  //legge file bar.csv riga per riga
         char copia[256];                                    //variabile copia della variabile riga
         strncpy(copia, riga, sizeof(copia) - 1);
@@ -122,8 +123,33 @@ void rimuovi_bottiglia_menu(Menu* menu, char* nome ){
     }
 }
 
-Bottiglia* get_bottiglia(Menu* menu, char* nome) {
-    Bottiglia* current = menu->testa;
+void carica_menu_bottiglie(Menu* menu) {
+    if (menu == NULL) return;
+
+    FILE *f = fopen(FILE_BAR, "r");
+    if (f == NULL) return;
+
+    char riga[256];
+    while (fgets(riga, sizeof(riga), f)) {
+        char nome[50];
+        float gradazione, prezzo;
+        if (sscanf(riga, "%49[^,],%f,%f", nome, &gradazione, &prezzo) == 3) {
+            Bottiglia* nuovaBottiglia = (Bottiglia*)malloc(sizeof(Bottiglia));
+            strcpy(nuovaBottiglia->nome, nome);
+            nuovaBottiglia->gradazione = gradazione;
+            nuovaBottiglia->prezzo = prezzo;
+            nuovaBottiglia->next = menu->testa;
+            menu->testa = nuovaBottiglia;
+            menu->lunghezza++;
+        }
+    }
+
+    fclose(f);
+}
+
+Bottiglia* get_bottiglia(Menu* menu, char* nome) {          //cerca una bottiglia in base al nome che passo , se la trovo restituisco il puntatore alla bottiglia, 
+                                                            //altrimenti restituisco NULL e stampo un messaggio di errore
+    Bottiglia* current = menu->testa;                       
     
     while (current != NULL) {
         if (strcmp(current->nome, nome) == 0) {
