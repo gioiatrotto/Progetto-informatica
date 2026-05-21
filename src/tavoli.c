@@ -25,7 +25,7 @@ typedef struct{
 }Tavolo;
 
 void aggiungiTavoli(){
-    FILE *fp = fopen("tavoli.csv", "a");  
+    FILE *fp = fopen(FILE_TAVOLI, "a");  
     if (fp == NULL) {
         printf("Errore apertura file!\n");
         return;
@@ -58,8 +58,8 @@ void aggiungiTavoli(){
 }
 
 void eliminaTavoli(){
-    FILE *fp = fopen("tavoli.csv", "r"); 
-    FILE *fpTmp = fopen("temp.csv", "w");
+    FILE *fp = fopen(FILE_TAVOLI, "r"); 
+    FILE *fpTmp = fopen(FILE_TEMP, "w");
     int cerca;
     Tavolo T;
 
@@ -84,8 +84,8 @@ void eliminaTavoli(){
     }
     fclose(fp);
     fclose(fpTmp);
-    fpTmp= fopen("temp.csv", "r"); 
-    fp = fopen("tavoli.csv", "w");
+    fpTmp= fopen(FILE_TEMP, "r"); 
+    fp = fopen(FILE_TAVOLI, "w");
     while(fread(&T, sizeof(Tavolo), 1, fpTmp))
         fwrite(&T, sizeof(Tavolo), 1, fp);
 
@@ -94,7 +94,7 @@ void eliminaTavoli(){
 }
 
 void stampaTavoli() {
-    FILE *fp = fopen("tavoli.csv", "r");  
+    FILE *fp = fopen(FILE_TAVOLI, "r");  
     if (fp == NULL) {
         printf("\nNessun tavolo presente!\n");
         return;
@@ -115,7 +115,7 @@ void stampaTavoli() {
 }
 
 void trovaTavoli(){
-    FILE *fp= fopen("tavoli.csv","r");
+    FILE *fp= fopen(FILE_TAVOLI,"r");
     Tavolo T;
     int cerca;
     int flag;
@@ -147,8 +147,8 @@ void trovaTavoli(){
     fclose(fp);
 }
 void modificaTavoli(){
-    FILE *fp = fopen("tavoli.csv", "r"); 
-    FILE *fpTmp = fopen("temp.csv", "w");
+    FILE *fp = fopen(FILE_TAVOLI, "r"); 
+    FILE *fpTmp = fopen(FILE_TEMP, "w");
     int cerca;
     Tavolo T;
     char tipo_str[10];
@@ -197,8 +197,8 @@ void modificaTavoli(){
     }
     fclose(fp);
     fclose(fpTmp);
-    fpTmp = fopen("temp.csv", "r"); 
-    fp= fopen("tavoli.csv", "w");
+    fpTmp = fopen(FILE_TEMP, "r"); 
+    fp= fopen(FILE_TAVOLI, "w");
     while(fread(&T, sizeof(Tavolo), 1, fpTmp))
         fwrite(&T, sizeof(Tavolo), 1, fp);
 

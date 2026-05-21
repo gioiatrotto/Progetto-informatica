@@ -22,18 +22,18 @@ typedef struct {
 
 // Rimuove i caratteri di invio a fine riga
 void pulisci_stringa(char *s) {
-    size_t lunghezza = strlen(s);
-    while (lunghezza > 0 && (s[lunghezza - 1] == '\n' || s[lunghezza - 1] == '\r')) {
-        s[lunghezza - 1] = '\0';
-        lunghezza--;
+    size_t lunghezza = strlen(s);                                                       //calcola la lunghezza della stringa
+    while (lunghezza > 0 && (s[lunghezza - 1] == '\n' || s[lunghezza - 1] == '\r')) {   //rimuove i caratteri di invio a fine riga
+        s[lunghezza - 1] = '\0';                                                        //sostituisce il carattere di invio con il carattere \0
+        lunghezza--;                                                                    //decrementa la lunghezza della stringa
     }
 }
 
 // Ritorna l'ultimo ID salvato
 int prendi_ultimo_id() {
     FILE *f = fopen(FILE_ID, "r");
-    int id = 0;
-    if (f != NULL) {
+    int id = 0;                            
+    if (f != NULL) {                       //se il file esiste, leggo l'ultimo id salvato dentro id.csv
         fscanf(f, "%d", &id);
         fclose(f);
     }
@@ -43,7 +43,7 @@ int prendi_ultimo_id() {
 // Salva il nuovo ID nel file dedicato
 void salva_ultimo_id(int id) {
     FILE *f = fopen(FILE_ID, "w");
-    if (f != NULL) {
+    if (f != NULL) {                    //se il file esiste, salvo l'ultimo id dentro id.csv
         fprintf(f, "%d\n", id);
         fclose(f);
     }
@@ -52,13 +52,13 @@ void salva_ultimo_id(int id) {
 // Converte una stringa in una struct Cliente. Ritorna 1 se la conversione è avvenuta con successo, 0 altrimenti.
 int riga_a_cliente(const char *riga) {
     Cliente c;
-    char copia[256];
-    strncpy(copia, riga, sizeof(copia) - 1);
+    char copia[256];                            //crea un buffer di 256 caratteri 
+    strncpy(copia, riga, sizeof(copia) - 1);    //copio la stringa riga dentro copia lasciando uno spazio per il \0
     pulisci_stringa(copia);
 
-    char *pezzo = strtok(copia, ",");
-    if (pezzo == NULL) return 0;
-    c.ID = atoi(pezzo);
+    char *pezzo = strtok(copia, ",");           //leggo la riga fino alla prima virgola
+    if (pezzo == NULL) return 0;                //se non c'è niente da leggere, ritorno 0
+    c.ID = atoi(pezzo);                         //converto il primo pezzo in un intero e lo salvo come ID del cliente   
 
     pezzo = strtok(NULL, ",");
     if (pezzo == NULL) return 0;

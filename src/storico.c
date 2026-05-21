@@ -17,7 +17,7 @@ visualizzaStorico() {
     char riga[100];
 
 
-    FILE *f = fopen("storico.csv", "r");
+    FILE *f = fopen(FILE_STORICO, "r");
     if (f == NULL) {
         printf("Errore apertura file storico!\n");
         return;
@@ -43,7 +43,7 @@ stampaStoricoData() {
     scanf("%d %d %d", &giorno, &mese, &anno);
     getchar();
 
-    FILE *f = fopen("storico.csv", "r");
+    FILE *f = fopen(FILE_STORICO, "r");
     if (f == NULL) {
         printf("Errore apertura file storico!\n");
         return;

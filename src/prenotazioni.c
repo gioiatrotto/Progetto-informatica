@@ -53,8 +53,8 @@ void prenotaTavolo(Menu* menu){
     int scelta;
 
     prenotazione P;
-    FILE *fp = fopen("prenotazioni.csv", "a");
-    FILE  *f = fopen("storico.csv", "a");
+    FILE *fp = fopen(FILE_PRENOTAZIONI, "a");
+    FILE  *f = fopen(FILE_STORICO, "a");
     
     if (fp == NULL) {
         printf("Errore apertura file prenotazioni!\n");
@@ -93,6 +93,7 @@ void prenotaTavolo(Menu* menu){
     fprintf(fp, "%d,%d,%d,%d,%d,%d,%d\n", P.num_tavolo, P.num_presenti, P.meta_scelta.data_evento.giorno, P.meta_scelta.data_evento.mese, P.meta_scelta.data_evento.anno, P.id);
     fprintf(f, "%d,%d,%d,%d,%d,%d,%d\n", P.num_tavolo, P.num_presenti, P.meta_scelta.data_evento.giorno, P.meta_scelta.data_evento.mese, P.meta_scelta.data_evento.anno, P.id);
     fclose(fp);
+    fclose(f);
 
 }
 
