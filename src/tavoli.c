@@ -96,10 +96,12 @@ void stampaTavoli() {
     Tavolo T;
     printf("\n--- Tavoli ---\n");
     while (fread(&T, sizeof(Tavolo), 1, fp) == 1) {
+
         if (T.tipo == BASE)
             strcpy(tipo_str, "BASE");
         else
-        strcpy(tipo_str, "VIP");
+            strcpy(tipo_str, "VIP");
+
         printf("\nTipo: %s\nNumero massimo persone: %d\nPrezzo: %.2f\nNumero del tavolo: %d\n", tipo_str, T.max_persone, T.prezzo, T.num_tavolo);
     }
     fclose(fp);
