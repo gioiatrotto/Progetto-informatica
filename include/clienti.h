@@ -6,12 +6,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct {
-    char nome[40];
-    char cognome[40];
-    int eta;
-    int ID;
-} Cliente;
 
 
 /*
@@ -39,7 +33,7 @@ void salva_ultimo_id(int id);
 La funzione riga_a_cliente prende in input una stringa che rappresenta una riga del file clienti.csv 
 e un puntatore a una struttura Cliente, e estrae
 */
-int riga_a_cliente(const char *riga, Cliente *c);
+int riga_a_cliente(const char *riga);
 
 /*
 La funzione cercaCliente prende in input il nome e il cognome di un cliente, e cerca nel file clienti.csv

@@ -4,6 +4,14 @@
 #include <stdbool.h>
 
 #include <bar.h>
+#define FILE_CLIENTI "data/clienti.csv"
+#define FILE_TEMP "data/clienti_temp.csv"
+#define FILE_ID "data/id.csv"
+#define FILE_TAVOLI "data/tavoli.csv"
+#define FILE_BAR "data/bar.csv"
+#define FILE_PRENOTAZIONI "data/prenotazioni.csv"
+#define FILE_STORICO "data/storico.csv"
+
 
 Menu* creaMenu() {
     Menu* menu = (Menu*)malloc(sizeof(Menu));

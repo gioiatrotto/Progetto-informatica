@@ -4,6 +4,13 @@
 #include <stdbool.h>
 
 #include <tavoli.h>
+#define FILE_CLIENTI "data/clienti.csv"
+#define FILE_TEMP "data/clienti_temp.csv"
+#define FILE_ID "data/id.csv"
+#define FILE_TAVOLI "data/tavoli.csv"
+#define FILE_BAR "data/bar.csv"
+#define FILE_PRENOTAZIONI "data/prenotazioni.csv"
+#define FILE_STORICO "data/storico.csv"
 
 typedef enum{
    BASE,
@@ -166,6 +173,7 @@ void modificaTavoli(){
                 strcpy(tipo_str, "VIP");
 
             printf("\nTrovato\nTipo: %s\nNumero massimo persone: %d\nPrezzo: %.2f\nNumero del tavolo: %d\n", tipo_str, T.max_persone, T.prezzo, T.num_tavolo);
+
             printf("\nInserisci il nuovo numero del tavolo: ");
             scanf("%d", &T.num_tavolo);
             printf("\nInserisci il nuovo numero massimo di persone che può ospitare il tavolo: ");
