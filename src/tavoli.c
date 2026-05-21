@@ -97,7 +97,7 @@ void stampaTavoli() {
     printf("\n--- Tavoli ---\n");
     while (fread(&T, sizeof(Tavolo), 1, fp) == 1) {
 
-        if (T.tipo == BASE)
+          if (T.tipo == BASE)
             strcpy(tipo_str, "BASE");
         else
             strcpy(tipo_str, "VIP");
@@ -112,6 +112,8 @@ void trovaTavoli(){
     Tavolo T;
     int cerca;
     int flag;
+    char tipo_str[10];
+    
     if (fp == NULL) {
         printf("Errore apertura file!\n");
         return;
@@ -122,8 +124,11 @@ void trovaTavoli(){
 
     while(fread(&T ,sizeof(Tavolo),1,fp)==1 && !flag){
         if(T.num_tavolo == cerca){
-            char tipo_str[10];
-            strcpy(tipo_str, T.tipo == BASE ? "BASE" : "VIP");
+              if (T.tipo == BASE)
+            strcpy(tipo_str, "BASE");
+        else
+            strcpy(tipo_str, "VIP");
+
             printf("\nTrovato\nTipo: %s\nNumero massimo persone: %d\nPrezzo: %.2f\nNumero del tavolo: %d\n", tipo_str, T.max_persone, T.prezzo, T.num_tavolo);
             flag=1;
 
