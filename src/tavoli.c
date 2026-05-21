@@ -124,10 +124,10 @@ void trovaTavoli(){
 
     while(fread(&T ,sizeof(Tavolo),1,fp)==1 && !flag){
         if(T.num_tavolo == cerca){
-              if (T.tipo == BASE)
-            strcpy(tipo_str, "BASE");
-        else
-            strcpy(tipo_str, "VIP");
+            if (T.tipo == BASE)
+                strcpy(tipo_str, "BASE");
+            else
+                strcpy(tipo_str, "VIP");
 
             printf("\nTrovato\nTipo: %s\nNumero massimo persone: %d\nPrezzo: %.2f\nNumero del tavolo: %d\n", tipo_str, T.max_persone, T.prezzo, T.num_tavolo);
             flag=1;
@@ -144,6 +144,7 @@ void modificaTavoli(){
     FILE *fpTmp = fopen("temp.csv", "w");
     int cerca;
     Tavolo T;
+    char tipo_str[10];
 
     if (fp == NULL) {
         printf("Nessun tavolo presente!\n");
@@ -158,8 +159,12 @@ void modificaTavoli(){
     getchar();
     while(fread(&T, sizeof(Tavolo),1, fp)){
         if(T.num_tavolo == cerca){
-            char tipo_str[10];
-            strcpy(tipo_str, T.tipo == BASE ? "BASE" : "VIP");
+            
+            if (T.tipo == BASE)
+                strcpy(tipo_str, "BASE");
+            else
+                strcpy(tipo_str, "VIP");
+
             printf("\nTrovato\nTipo: %s\nNumero massimo persone: %d\nPrezzo: %.2f\nNumero del tavolo: %d\n", tipo_str, T.max_persone, T.prezzo, T.num_tavolo);
             printf("\nInserisci il nuovo numero del tavolo: ");
             scanf("%d", &T.num_tavolo);
@@ -184,10 +189,10 @@ void modificaTavoli(){
     }
     fclose(fp);
     fclose(fpTmp);
-    fp = fopen("temp.csv", "r"); 
-    fpTmp = fopen("tavoli.csv", "w");
-    while(fread(&T, sizeof(Tavolo), 1, fp))
-        fwrite(&T, sizeof(Tavolo), 1, fpTmp);
+    fpTmp = fopen("temp.csv", "r"); 
+    fp= fopen("tavoli.csv", "w");
+    while(fread(&T, sizeof(Tavolo), 1, fpTmp))
+        fwrite(&T, sizeof(Tavolo), 1, fp);
 
     fclose(fp);
     fclose(fpTmp);
