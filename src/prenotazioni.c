@@ -87,8 +87,8 @@ void prenotaTavolo(Menu* menu){
             getchar();
         }
     }while(scelta < 1 || scelta > 3);
-    P.meta_scelta = eventi[scelta-1];
-        
+    P.meta_scelta = eventi[scelta-1];            //scelta -1 perche l'utente sceglie da 1 a 3 ma noi nell'array partiamo da 0
+
     printf("\nInserisci l'id del cliente che ha prenotato: ");
     scanf("%d", &P.id);
     getchar();
