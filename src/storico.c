@@ -54,7 +54,7 @@ stampaStoricoData() {
 
     while (fgets(riga, sizeof(riga), f)) {
         
-        sscanf(riga, "%d,%d,%d,%d,%d,%d", &num_tavolo, &num_presenti, &g, &m, &a, &id);
+        fscanf(f, "%d,%d,%d,%d,%d,%d", &num_tavolo, &num_presenti, &g, &m, &a, &id);
         if (g == giorno && m == mese && a == anno) {
             printf("%d | %d | %d\n", num_tavolo, num_presenti, id);
             cnt++;

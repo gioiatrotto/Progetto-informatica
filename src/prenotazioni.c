@@ -80,13 +80,15 @@ void prenotaTavolo(Menu* menu){
     scanf("%d", &scelta);
     getchar();
     
-    if (scelta >= 1 && scelta <= 3) {
-        P.meta_scelta = eventi[scelta - 1];
-    } else {
-        printf("Scelta non valida, viene selezionata la prima meta.\n");
-        P.meta_scelta = eventi[0];
-    }
-
+    do{
+        if(scelta < 1 || scelta > 3){
+            printf("Scelta non valida. Scegli la meta(1-3): ");
+            scanf("%d", &scelta);
+            getchar();
+        }
+    }while(scelta < 1 || scelta > 3);
+    P.meta_scelta = eventi[scelta-1];
+        
     printf("\nInserisci l'id del cliente che ha prenotato: ");
     scanf("%d", &P.id);
     getchar();

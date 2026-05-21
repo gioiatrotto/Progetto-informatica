@@ -89,7 +89,6 @@ int main(){
                 printf("4) Stampa tavoli\n");
                 printf("5) Trova tavolo\n");
                 printf("6) Prenota Tavolo\n");
-                printf("7) modifica prenotazione\n");
                 printf("0) Vai alla home\n");
                 scanf("%d", &sceltaTavoli);
                 getchar();
@@ -117,10 +116,7 @@ int main(){
                     case 6:
                         prenotaTavolo(menu);
                         break;
-                    case 7:
-                        // modificaPrenotazione();  // TODO: Funzione non ancora implementata
-                        printf("Funzione non ancora implementata.\n");
-                        break;
+                   
                     case 0:
                         printf("\nSei tornato al menù principale.\n");
                         break;
