@@ -81,11 +81,10 @@ void prenotaTavolo(Menu* menu){
     getchar();
     
     do{
-        if(scelta < 1 || scelta > 3){
-            printf("Scelta non valida. Scegli la meta(1-3): ");
-            scanf("%d", &scelta);
-            getchar();
-        }
+        printf("\nScegli la meta(1-3): ");
+        scanf("%d", &scelta);
+        getchar();
+        
     }while(scelta < 1 || scelta > 3);
     P.meta_scelta = eventi[scelta-1];            //scelta -1 perche l'utente sceglie da 1 a 3 ma noi nell'array partiamo da 0
 
