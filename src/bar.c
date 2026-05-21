@@ -62,31 +62,32 @@ void rimuovi_bottiglia_menu(Menu* menu, char* nome ){
         return;
     }
 
-    bool trovato = false;
-    Bottiglia* current = menu->testa;
+    bool trovato = false;                                   //variabile per tenere traccia se la bottiglia è stata trovata e rimossa
+    Bottiglia* current = menu->testa;                       //prende il 1 elemento della lista  
 
-    if (strcmp(current->nome, nome) == 0) {
-        Bottiglia* temp = current;
-        menu->testa = current->next;
-        free(temp);
-        menu->lunghezza--;
-        trovato = true;
+    if (strcmp(current->nome, nome) == 0) {                 //confronta il nome della bottiglia con il nome cercato
+        Bottiglia* temp = current;                          //temp la utilizzo per salvarci la bottiglia da eliminare
+        menu->testa = current->next;                        //aggiorno la testa della lista
+        free(temp);                                         // libera la memoria della bottiglia da eliminare
+        menu->lunghezza--;                                  //dato che tolgo un nodo diminuisce la lunghezza
+        trovato = true;                                     //bottiglia trovata e rimossa  
     } else {
-        while (current->next != NULL) {
-            if (strcmp(current->next->nome, nome) == 0) {
-                Bottiglia* temp = current->next;
+        while (current->next != NULL) {                     //scorre la lista fino a trovare la bottiglia da eliminare o arrivare alla fine della lista
+            if (strcmp(current->next->nome, nome) == 0) {   //confronta il nome della bottiglia successiva con quella da cercare
+                Bottiglia* temp = current->next;            
                 current->next = current->next->next;
                 free(temp);
                 menu->lunghezza--;
                 trovato = true;
                 break;
             }
-            current = current->next;
+            current = current->next;                        //passa al nodo successivo
         }
     }
 
     FILE *f = fopen(FILE_BAR, "r");
     FILE *fTemp = fopen(FILE_BAR_TEMP, "w");
+
     if (f == NULL || fTemp == NULL) {
         if (f != NULL) fclose(f);
         if (fTemp != NULL) fclose(fTemp);
@@ -94,27 +95,25 @@ void rimuovi_bottiglia_menu(Menu* menu, char* nome ){
         return;
     }
 
-    char riga[256];
-    while (fgets(riga, sizeof(riga), f)) {
-        char copia[256];
+    char riga[256];                                        //salvo riga corrente
+    while (fgets(riga, sizeof(riga), f)) {                  //legge file bar.csv riga per riga
+        char copia[256];                                    //variabile copia della variabile riga
         strncpy(copia, riga, sizeof(copia) - 1);
         copia[sizeof(copia) - 1] = '\0';
 
-        char *nome_corrente = strtok(copia, ",");
-        if (nome_corrente == NULL) {
-            continue;
-        }
-
-        if (strcmp(nome_corrente, nome) != 0) {
-            fputs(riga, fTemp);
+        char *nome_corrente = strtok(copia, ",");           //legge il primo valore della riga fino alla ,
+        if (nome_corrente != NULL) {
+            if (strcmp(nome_corrente, nome) != 0) {         //ciò che non devo eliminare salvo su file bar temporaneo
+                fputs(riga, fTemp);
+            }
         }
     }
 
     fclose(f);
     fclose(fTemp);
 
-    remove(FILE_BAR);
-    rename(FILE_BAR_TEMP, FILE_BAR);
+    remove(FILE_BAR);                                       //elimino il file bar.csv
+    rename(FILE_BAR_TEMP, FILE_BAR);                        //rinomino il file temporaneo con il nome del file originale    
 
     if (trovato) {
         printf("Bottiglia rimossa con successo.\n");
