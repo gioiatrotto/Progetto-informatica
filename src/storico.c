@@ -12,7 +12,7 @@
 #define FILE_PRENOTAZIONI "data/prenotazioni.csv"
 #define FILE_STORICO "data/storico.csv"
 
-visualizzaStorico() {
+void visualizzaStorico() {
     int num_tavolo, num_presenti, giorno, mese, anno, id;
     char riga[100];
 
@@ -24,16 +24,17 @@ visualizzaStorico() {
     }
     
     printf("\n----Storico prenotazioni----\n");
-    printf("Tavolo | Presenti | Data | ID\n");
+    printf("|Tavolo\t|\tPresenti |\tData\t\t|\tID\n");
     while (fgets(riga, sizeof(riga), f)) {
         
         sscanf(riga, "%d,%d,%d,%d,%d,%d", &num_tavolo, &num_presenti, &giorno, &mese, &anno, &id);
-        printf("%d | %d | %02d/%02d/%04d | %d\n", num_tavolo, num_presenti, giorno, mese, anno, id);
+        printf("|%d\t|\t%d\t |\t%02d/%02d/%04d\t|\t%d\n", num_tavolo, num_presenti, giorno, mese, anno, id);
     }
     
     fclose(f);
 }
-stampaStoricoData() {
+
+void stampaStoricoData() {
     int giorno, mese, anno;
     int num_tavolo, num_presenti, g, m, a, id;
     int cnt=0;

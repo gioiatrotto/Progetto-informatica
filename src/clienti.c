@@ -155,10 +155,11 @@ void eliminaClienti() {
         Cliente c;
         if (riga_a_cliente(riga, &c) == 1 && c.ID == ID_cerca) {
             trovato = 1;
-            printf("Cliente eliminato con successo.\n");
-            continue;                                                 //continue salta la scrittura della riga corrente sul file temporaneo, eliminando di fatto il cliente cercato
+            printf("Cliente eliminato con successo.\n");                                                 
+        }else{
+          fputs(riga, t);  //scriviamo sul file temp ciò che non dobbiamo eliminare
         }
-        fputs(riga, t);
+        
     }
     fclose(f);
     fclose(t);

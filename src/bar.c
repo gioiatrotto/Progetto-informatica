@@ -22,7 +22,7 @@ Menu* creaMenu() {
 }
 
 void stampa_menu_bottiglie(Menu* menu) {
-    (void)menu;
+    
     FILE *f = fopen(FILE_BAR, "r");
     if (f == NULL) {
         printf("Errore apertura file bar.csv!\n");
@@ -46,11 +46,11 @@ void aggiungi_bottiglia_menu(Menu* menu, float gradazione, float prezzo, char* n
         printf("Errore apertura file bar.csv!\n");
         return;
     }
-    Bottiglia* nuovaBottiglia = (Bottiglia*)malloc(sizeof(Bottiglia));
-    nuovaBottiglia->gradazione = gradazione;
-    nuovaBottiglia->prezzo = prezzo;
+    Bottiglia* nuovaBottiglia = (Bottiglia*)malloc(sizeof(Bottiglia));                  //creo un nodo di tipo bottiglia
+    nuovaBottiglia->gradazione = gradazione;                                            //copio gradazione, prezzo e nome nella nuova bottiglia
+    nuovaBottiglia->prezzo = prezzo;                                                    
     strcpy(nuovaBottiglia->nome, nome);
-    nuovaBottiglia->next = menu->testa;
+    nuovaBottiglia->next = menu->testa;                                                 //inserisco la nuova bottiglia in testa alla lista del menu
     menu->testa = nuovaBottiglia;
     menu->lunghezza++;
     fprintf(f, "%s,%.2f,%.2f\n", nome, gradazione, prezzo);
@@ -123,24 +123,25 @@ void rimuovi_bottiglia_menu(Menu* menu, char* nome ){
     }
 }
 
-void carica_menu_bottiglie(Menu* menu) {
+void carica_menu_bottiglie(Menu* menu) {            //carica le bottiglie dal file bar.csv e le salva nella lista del menu      
+
     if (menu == NULL) return;
 
     FILE *f = fopen(FILE_BAR, "r");
     if (f == NULL) return;
 
     char riga[256];
-    while (fgets(riga, sizeof(riga), f)) {
+    while (fgets(riga, sizeof(riga), f)) {                  
         char nome[50];
         float gradazione, prezzo;
-        if (sscanf(riga, "%49[^,],%f,%f", nome, &gradazione, &prezzo) == 3) {
-            Bottiglia* nuovaBottiglia = (Bottiglia*)malloc(sizeof(Bottiglia));
-            strcpy(nuovaBottiglia->nome, nome);
-            nuovaBottiglia->gradazione = gradazione;
+        if (sscanf(riga, "%49[^,],%f,%f", nome, &gradazione, &prezzo) == 3) {   //utilizzata per estrarre 3 informazioni 
+            Bottiglia* nuovaBottiglia = (Bottiglia*)malloc(sizeof(Bottiglia));  //creo un nodo di tipo bottiglia 
+            strcpy(nuovaBottiglia->nome, nome);                                 //trasferisco il nome,gradazione e prezzo nella nuova bottiglia
+            nuovaBottiglia->gradazione = gradazione;                                
             nuovaBottiglia->prezzo = prezzo;
-            nuovaBottiglia->next = menu->testa;
-            menu->testa = nuovaBottiglia;
-            menu->lunghezza++;
+            nuovaBottiglia->next = menu->testa;                                 //imposto next della bottiglia nuova verso l'attuale testa della lista
+            menu->testa = nuovaBottiglia;                                       //aggiorno la testa del menu con la nuova bottiglia
+            menu->lunghezza++;                                                  //incremento la lunghezza del menu         
         }
     }
 
